@@ -1,0 +1,17 @@
+<?php
+
+$form = $this->form;
+$form->prepare();
+echo $this->form()->openTag($form);
+
+echo $this->formElement($form->get('status'));
+echo $this->formElementErrors($form->get('status'));
+
+
+echo $this->formElement($form->get('submit'));
+
+
+echo $this->formElement($form->get('csrf'));
+echo $this->formElementErrors($form->get('csrf'));
+
+echo $this->form()->closeTag();
