@@ -4,7 +4,7 @@ namespace Wall\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Stdlib\Hydrator\ClassMethods;
-use Wall\Entity\User;
+use Users\Entity\User;
 use Api\Client\ApiClient as ApiClient;
 
 class IndexController extends AbstractActionController

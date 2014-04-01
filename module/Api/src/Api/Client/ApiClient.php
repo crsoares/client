@@ -97,7 +97,7 @@ class ApiClient
 		} else {
 			$logger = new Logger();
 			$logger->addWriter(new Stream('data/logs/apiclient.log'));
-			$logger->debug($response->getBody);
+			$logger->debug($response->getBody());
 			return false;
 		}
 	}

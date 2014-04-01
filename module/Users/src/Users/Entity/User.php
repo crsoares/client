@@ -2,6 +2,9 @@
 
 namespace Users\Entity;
 
+use Zend\Stdlib\Hydrator\ClassMethods;
+use Wall\Entity\Status;
+
 class User
 {
 	const GENDER_MALE = 1;
@@ -16,6 +19,8 @@ class User
 	protected $gender;
 	protected $createdAt = null;
 	protected $updatedAt = null;
+
+	protected $feed = array();
 
 	public function setId($id)
 	{
@@ -37,6 +42,17 @@ class User
 	public function getUsername()
 	{
 		return $this->username;
+	}
+
+	public function setName($name)
+	{
+		$this->name = $name;
+		return $this;
+	}
+
+	public function getName()
+	{
+		return $this->name;
 	}
 
 	public function setSurname($surname)
@@ -114,5 +130,21 @@ class User
 	public function getUpdatedAt()
 	{
 		return $this->updatedAt;
+	}
+
+	public function setFeed($feed)
+	{
+		$hydrator = new ClassMethods();
+
+		foreach($feed as $entry) {
+			if(array_key_exists('status', $entry)) {
+				$this->feed[] = $hydrator->hydrate($entry, new Status());
+			}
+		}
+	}
+
+	public function getFeed()
+	{
+		return $this->feed;
 	}
 }
