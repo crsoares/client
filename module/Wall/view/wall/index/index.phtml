@@ -53,7 +53,7 @@
 				</section>
 				<section>
 					<ul class="post-list">
-						<?php foreach($profileData->getFee() as $entry): ?>
+						<?php foreach($profileData->getFeed() as $entry): ?>
 								<li class="post"> 
 									<section>
 										<a href="<?php echo $this->url('wall', array('username' => $profileData->getUsername())); ?>" title="<?php printf('%s %s', $profileData->getName(), $profileData->getSurname()); ?>" class="pull-left thumbnail">

@@ -56,13 +56,6 @@ class ApiClient
 		return self::doRequest($url, $data, Request::METHOD_POST);
 	}
 
-	public static function postWallContent($username, $data)
-	{
-		$url = self::$endpointHost . sprintf(self::$endpointWall, $username);
-
-		return self::doRequest($url, $data, Request::METHOD_POST);
-	}
-
 	/**
 	 * Criar uma nova instância do cliente, se não tê-lo ou 
 	 * Devolver o que já temos para reutilizar
