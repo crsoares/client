@@ -4,6 +4,7 @@ namespace Users\Entity;
 
 use Zend\Stdlib\Hydrator\ClassMethods;
 use Wall\Entity\Status;
+use Wall\Entity\Image; 
 
 class User
 {
@@ -68,8 +69,14 @@ class User
 
 	public function setAvatar($avatar)
 	{
-		$this->avatar = $avatar;
-		return $this;
+		if(empty($avatar)) {
+			$defaultImage = new Image();
+			$defaultImage->setFilename('default.png');
+			$this->avatar = $defaultImage;
+		} else {
+			$hydrator = new ClassMethods();
+			$this->avatar = $hydrator->hydrate($avatar, new Image());
+		}
 	}
 
 	public function getAvatar()
@@ -139,6 +146,8 @@ class User
 		foreach($feed as $entry) {
 			if(array_key_exists('status', $entry)) {
 				$this->feed[] = $hydrator->hydrate($entry, new Status());
+			} else if(array_key_exists('filename', $entity)) {
+				$this->feed[] = $hydrator->hydrate($entity, new Image());
 			}
 		}
 	}
