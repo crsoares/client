@@ -146,8 +146,8 @@ class User
 		foreach($feed as $entry) {
 			if(array_key_exists('status', $entry)) {
 				$this->feed[] = $hydrator->hydrate($entry, new Status());
-			} else if(array_key_exists('filename', $entity)) {
-				$this->feed[] = $hydrator->hydrate($entity, new Image());
+			} else if(array_key_exists('filename', $entry)) {
+				$this->feed[] = $hydrator->hydrate($entry, new Image());
 			}
 		}
 	}

@@ -2,19 +2,20 @@
 
 namespace Wall\Entity;
 
-class Image
+use Zend\Stdlib\Hydrator\ClassMethods;
+
+class Link
 {
-	public $domain = 'http://zf2-api/images/';
-	
 	protected $id = null;
 	protected $userId = null;
-	protected $filename = null;
+	protected $url = null;
+	protected $title = null;
 	protected $createdAt = null;
 	protected $updatedAt = null;
 
 	public function setId($id)
 	{
-		$this->id = (int)$id;
+		$this->id = $id;
 		return $this;
 	}
 
@@ -25,7 +26,7 @@ class Image
 
 	public function setUserId($userId)
 	{
-		$this->userId = (int) $userId;
+		$this->userId = $userId;
 		return $this;
 	}
 
@@ -34,15 +35,26 @@ class Image
 		return $this->userId;
 	}
 
-	public function setFilename($filename)
+	public function setUrl($url)
 	{
-		$this->filename = $filename;
+		$this->url = $url;
 		return $this;
 	}
 
-	public function getFilename()
+	public function getUrl()
 	{
-		return $this->filename;
+		return $this->url;
+	}
+
+	public function setTitle($title)
+	{
+		$this->title = $title;
+		return $this;
+	}
+
+	public function getTitle()
+	{
+		return $this->title;
 	}
 
 	public function setCreatedAt($createdAt)
@@ -53,10 +65,10 @@ class Image
 
 	public function getCreatedAt()
 	{
-		$this->createdAt;
+		return $this->createdAt;
 	}
 
-	public function setUpdateAt($updatedAt)
+	public function setUpdatedAt($updatedAt)
 	{
 		$this->updatedAt = new \DateTime($updatedAt);
 		return $this;
@@ -66,11 +78,4 @@ class Image
 	{
 		return $this->updatedAt;
 	}
-
-	public function getUrl()
-	{
-		return $this->domain . $this->getFilename();
-	}
-
-	
 }

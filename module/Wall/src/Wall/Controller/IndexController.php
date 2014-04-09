@@ -120,37 +120,40 @@ class IndexController extends AbstractActionController
 			$form->setMessages(array('image' => $errors));
 		}
 
-		$destPath = 'data/tmp/';
-		$adapter->setDestination($destPath);
-		
-		$fileinfo = $adapter->getFileinfo();
-		preg_match('/.+\/(.+)/', $fileindo['image']['type'], $matches);
-		$extension = $matches[1];
-		$newFilename = sprintf(
-			'%s %s',
-			sha1(uniqid(time(), true)),
-			$extensioin
-		);
+		if($form->isValid()) {
+			$destPath = 'data/tmp/';
+			$adapter->setDestination($destPath);
 
-		$adapter->addFilter('File\Rename', array('target' => $destPath . $newFile, 'overwrite' => true));
+			$fileinfo = $adapter->getFileInfo();
+			preg_match('/.+\/(.+)/', $fileinfo['image']['type'], $matches);
+			$extension = $matcher[1];
+			$newFilename = sprintf('%s %s', sha1(uniqid(time(), true)), $extension);
 
-		if($adapter->receive($filename)) {
-			$data = array();
-			$data['image'] = base64_encode(
-				file_get_contents(
-					$destPath . $newFilename
+			$adapter->addFilter('File\Rename', 
+				array(
+					'target' => $destPath . $newFilename,
+					'overwrite' => true
 				)
 			);
 
-			$data['user_id'] = $user->getId();
+			if($adapter->receive($filename)) {
+				$data = array();
+				$data['image'] = base64_encode(
+					file_get_contents(
+						$destPath . $newFilename
+					)
+				);
+				$data['user_id'] = $user->getId();
 
-			unlink($destPath . $newFilename);
+				unlink($destPath . $newFilename);
 
-			$response = ApiCliente::postWallContent(
-				$user->getUsername(), $data
-			);
-			return $response->isSuccess();
+				$response = ApiClient::postWallContent($user->getUsername(), $data);
+				return $response['result'];
+			}
 		}
+
+		return $form;
+
 	}
 
  	protected function processSimpleForm($form, $user, array $data)
