@@ -12,6 +12,7 @@ use Api\Client\ApiClient as ApiClient;
 
 use Wall\Forms\TextStatusForm;
 use Wall\Forms\ImageForm;
+use Wall\Forms\LinkForm;
 use Wall\Entity\Status;
 
 class IndexController extends AbstractActionController
@@ -39,6 +40,7 @@ class IndexController extends AbstractActionController
 		$request = $this->getRequest();
 		$statusForm = new TextStatusForm();
 		$imageForm = new ImageForm();
+		$linkForm = new LinkForm();
 
 		if($request->isPost()) {
 			$data = $request->getPost()->toArray();
@@ -53,6 +55,10 @@ class IndexController extends AbstractActionController
 					$request->getFiles()->toArray()
 				);
 				$result = $this->createImage($imageForm, $user, $data);
+			}
+
+			if(array_key_exists('url', $data)) {
+				$result = $this->createLink($linkForm, $user, $data);
 			}
 
 			switch(true) {
@@ -80,9 +86,11 @@ class IndexController extends AbstractActionController
 
 		$statusForm->setAttribute('action', $this->url()->fromRoute('wall', array('username' => $user->getUsername())));
 		$imageForm->setAttribute('action', $this->url()->fromRoute('wall', array('username' => $user->getUsername())));
+		$linkForm->setAttribute('action', $this->url()->formRoute('wall', array('username' => $user->getUsername())));
 		$viewData['profileData'] = $user;
 		$viewData['textContentForm'] = $statusForm;
 		$viewData['imageContentForm'] = $imageForm;
+		$viewData['linkContentForm'] = $linkForm;
 
 		if($flashMessenger->hasMessages()) {
 			$viewData['flashMessages'] = $flashMessenger->getMessages();
@@ -154,6 +162,11 @@ class IndexController extends AbstractActionController
 
 		return $form;
 
+	}
+
+	protected function createLink($form, $user, array $data)
+	{
+		return $this->processSimpleForm($form, $user, $data);
 	}
 
  	protected function processSimpleForm($form, $user, array $data)
